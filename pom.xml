@@ -17,7 +17,7 @@
     </parent>
 
     <properties>
-        <app.id>shamiktest-146523</app.id>
+        <app.id>my-bootiful-proj-68243872615</app.id>
         <app.version>1</app.version>
         <appengine.version>1.9.42</appengine.version>
         <gcloud.plugin.version>1.9.42</gcloud.plugin.version>

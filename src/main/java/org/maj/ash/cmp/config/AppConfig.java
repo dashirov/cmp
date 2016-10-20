@@ -17,6 +17,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableConfigurationProperties
 @EnableScheduling
 @ConfigurationProperties
-@ComponentScan(basePackages = {"com.mindspark.webapp.ump","com.mindspark.util.semms.cmrs.kpi"})
+@ComponentScan(basePackages = {"org.maj.ash"})
 public class AppConfig {
 }

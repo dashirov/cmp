@@ -2,7 +2,7 @@ package org.maj.ash.cmp;
 
 import com.googlecode.objectify.ObjectifyService;
 import org.maj.ash.cmp.config.AppConfig;
-import org.maj.ash.cmp.model.Account;
+import org.maj.ash.cmp.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,8 +29,14 @@ public class App
     }
 
     private void resister() {
-        System.out.println("Registering");
-        ObjectifyService.register(Account.class);
+        LOGGER.info("Registering");
+        ObjectifyService.register(MSAAccount.class);
+        ObjectifyService.register(BusinessUnit.class);
+        ObjectifyService.register(Campaign.class);
+        ObjectifyService.register(Marketplace.class);
+        ObjectifyService.register(MSAAccount.class);
+        ObjectifyService.register(Product.class);
+
     }
 
     public static void main(String[] args) {

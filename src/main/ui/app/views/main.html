@@ -1,11 +1,124 @@
+<div class="container">
+  <div class="row">
+<uib-tabset active="active">
+  <uib-tab index="0" heading="MSA Account">
 
-<span uib-dropdown on-toggle="toggled(open)">
-      <a href id="simple-dropdown" uib-dropdown-toggle>
-        Click me for a dropdown, yo!
-      </a>
-      <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown">
-        <li ng-repeat="thing in awesomeThings">
-          <a href>{{thing}}</a>
-        </li>
-      </ul>
-</span>
+    <form class="form-horizontal" style="margin-top:30px;">
+
+        <div class="form-group">
+          <label for="msaname" class="col-sm-2 control-label">Name</label>
+          <div class="col-sm-10">
+            <input id="msaname" type="text" ng-model="newMSAAccount.name" class="form-control"  placeholder="enter name">
+          </div>
+        </div>
+
+      <div class="form-group">
+        <label for="msdesc" class="col-sm-2 control-label">Description</label>
+        <div class="col-sm-10">
+          <input id="msdesc" type="text" ng-model="newMSAAccount.description" class="form-control"  placeholder="enter description">
+        </div>
+      </div>
+
+
+        <button type="submit" class="col-md-2 btn btn-primary" ng-click="createMSAAccount()">Create</button>
+    </form>
+  </uib-tab>
+
+  <uib-tab index="1" heading="Business Unit">
+
+    <form class="form-horizontal" style="margin-top:30px;">
+
+      <div class="form-group">
+        <label for="buname" class="col-sm-2 control-label">Name</label>
+        <div class="col-sm-10">
+          <input id="buname" type="text" ng-model="newbu.name" class="form-control"  placeholder="enter name">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="budesc" class="col-sm-2 control-label">Description</label>
+        <div class="col-sm-10">
+          <input id="budesc" type="text" ng-model="newbu.description" class="form-control"  placeholder="enter description">
+        </div>
+      </div>
+
+
+      <button type="submit" class="col-md-2 btn btn-primary" ng-click="createBU()">Submit</button>
+    </form>
+  </uib-tab>
+
+
+  <uib-tab index="2" heading="Marketplace">
+
+    <form class="form-horizontal" style="margin-top:30px;">
+
+      <div class="form-group">
+        <label for="mktname" class="col-sm-2 control-label">Name</label>
+        <div class="col-sm-10">
+          <input id="mktname" type="text" ng-model="newMSAAccount.name" class="form-control"  placeholder="enter name">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="mktdesc" class="col-sm-2 control-label">Description</label>
+        <div class="col-sm-10">
+          <input id="mktdesc" type="text" ng-model="newMSAAccount.description" class="form-control"  placeholder="enter description">
+        </div>
+      </div>
+
+
+      <button type="submit" class="col-md-2 btn btn-primary" ng-click="createMSAAccount()">Submit</button>
+    </form>
+  </uib-tab>
+
+
+  <uib-tab index="3" heading="Product">
+
+    <form class="form-horizontal" style="margin-top:30px;">
+
+      <div class="form-group">
+        <label for="msaname" class="col-sm-2 control-label">Name</label>
+        <div class="col-sm-10">
+          <input id="msaname" type="text" ng-model="newMSAAccount.name" class="form-control"  placeholder="enter name">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="msdesc" class="col-sm-2 control-label">Description</label>
+        <div class="col-sm-10">
+          <input id="msdesc" type="text" ng-model="newMSAAccount.description" class="form-control"  placeholder="enter description">
+        </div>
+      </div>
+
+
+      <button type="submit" class="col-md-2 btn btn-primary" ng-click="createMSAAccount()">Submit</button>
+    </form>
+  </uib-tab>
+
+  <uib-tab index="4" heading="Campaign">
+
+    <form class="form-horizontal" style="margin-top:30px;">
+
+      <div class="form-group">
+        <label for="msaname" class="col-sm-2 control-label">Name</label>
+        <div class="col-sm-10">
+          <input id="msaname" type="text" ng-model="newMSAAccount.name" class="form-control"  placeholder="enter name">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="msdesc" class="col-sm-2 control-label">Description</label>
+        <div class="col-sm-10">
+          <input id="msdesc" type="text" ng-model="newMSAAccount.description" class="form-control"  placeholder="enter description">
+        </div>
+      </div>
+
+
+      <button type="submit" class="col-md-2 btn btn-primary" ng-click="createMSAAccount()">Submit</button>
+    </form>
+  </uib-tab>
+
+</uib-tabset>
+  </div>
+</div>
+

@@ -8,10 +8,18 @@
  * Controller of the yoAngularApp
  */
 angular.module('yoAngularApp')
-  .controller('MainCtrl', function ($scope) {
+  .controller('MainCtrl', ['$scope','restservice', function ($scope,restservice) {
+    $scope.newMSAAccount = {};
+
+    $scope.createMSAAccount = function(){
+      restservice.createMSAAccount($scope.newMSAAccount,function(data){
+        console.log('created ' + data);
+      });
+    };
+
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
       'Karma'
     ];
-  });
+  }]);

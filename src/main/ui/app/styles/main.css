@@ -32,9 +32,14 @@ body {
 
 /* Custom page footer */
 .footer {
-  padding-top: 19px;
-  color: #777;
-  border-top: 1px solid #e5e5e5;
+  position: absolute;
+  right:0;
+  left: 0;
+  bottom: 0;
+  padding: 1rem;
+  background-color: #efefef;
+  text-align : center;
+
 }
 
 .container-narrow > hr {

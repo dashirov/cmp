@@ -16,37 +16,88 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 public class AccountServiceDaoGAEDS implements AccountServiceDao {
 
 
+    /**
+     * Given an acount POJO, simply save it. Account is either MSA or BU account.
+     * @param account
+     * Account ( or any subclasses i.e. MSAAccount or BusinessUnit ) POJO. With or without ID. If Id is not passed, a new
+     * database record will be made. If passed, existing record will be updated.
+     * @return
+     * returns the object updated aand synched to data store. If a new was created, it will contain auto key (Id)
+     */
     @Override
     public Account saveAccount(Account account) {
         ofy().save().entity(account).now();
         return account;
     }
 
+    /**
+     * Given an account Id, load the POJO from the data store
+     * @param accountId
+     * Long account Id
+     * @return
+     * Account POJO
+     */
     @Override
     public Account retrieveAccount(Long accountId) {
         return  ofy().load().type(Account.class).id(accountId).now();
     }
 
+    /**
+     * Instead of using Account Superclass, save operation on the MSAAccount subclass
+     * @param msaAccount
+     * MSAAccount POJO (with or without id). If id wasn't in the data store or if one wasn't supplied, a new record will
+     * be created, otherwise existing record will be updated
+     * @return
+     */
     @Override
     public MSAAccount saveMSAAccount(MSAAccount msaAccount) {
         return (MSAAccount) saveAccount(msaAccount);
     }
 
+    /**
+     * Retrieve operation on MSAAccount
+     * @param msaAccountId
+     * Long MSAAccount Id
+     * @return
+     * MSAAccount POJO loaded from the backend datastore
+     */
     @Override
     public MSAAccount retrieveMSAAccount(Long msaAccountId) {
         return  ofy().load().type(MSAAccount.class).id(msaAccountId).now();
     }
 
+    /**
+     * Same as Account and MSAAccount, persist BusinessUnit object in the data store backend
+     * @param businessUnit
+     * BusinessUnit POJO (with or without Id). If Id wasn't supplied or found inthe data store backend, a new object will
+     * be placed into the data store, otherwise existing record will be updated
+     * @return
+     * Updated BusinessUnit POJO
+     */
     @Override
     public BusinessUnit saveBusinessUnit(BusinessUnit businessUnit) {
         return (BusinessUnit) saveAccount(businessUnit);
     }
 
+    /**
+     * Retrieve BusinessUnit from the data store
+     * @param businessUnitId
+     * Long BusinessUnit Id
+     * @return
+     * BusinessUnit POJO loaded from the backend data store
+     */
     @Override
     public BusinessUnit retrieveBusinessUnit(Long businessUnitId) {
         return  ofy().load().type(BusinessUnit.class).id(businessUnitId).now();
     }
 
+    /**
+     * Persist product POJO in the backend data store. String productCode IS REQUIRED.
+     * @param product
+     * Product POJO to persist. If record already exists it will be updated, otherwise new record will be created
+     * @return
+     * Product POJO synched with the backend data store
+     */
     @Override
     public  Product saveProduct(Product product){
         Key productKey=ofy().save().entity(product).now();

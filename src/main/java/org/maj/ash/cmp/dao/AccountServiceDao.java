@@ -29,6 +29,9 @@ public interface AccountServiceDao {
     Campaign saveCampaign(Campaign campaign);
     Campaign retrieveCampaign(String campaignId);
 
+    Marketplace saveMarketplace(Marketplace marketplace);
+    Marketplace retrieveMarketplace(Long marketplaceId);
+
 
 
     /**

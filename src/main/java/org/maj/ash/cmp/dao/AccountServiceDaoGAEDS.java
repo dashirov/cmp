@@ -116,6 +116,27 @@ public class AccountServiceDaoGAEDS implements AccountServiceDao {
 
     @Override
     public Campaign saveCampaign(Campaign campaign) {
+        if (campaign.getCode() == null)
+            throw new IllegalArgumentException("Campaign requires uniqeue campaign code");
+        if (campaign.getMarketplace() == null)
+            throw new IllegalArgumentException("Campaign must be associated with a marketplace");
+        else {
+            Marketplace marketplace = ofy().load().type(Marketplace.class).id(campaign.getMarketplace()).now();
+            if (marketplace == null)
+                throw new IllegalArgumentException("No such marketplace, register it first.");
+        }
+
+        if (campaign.getProduct() == null)
+            throw new IllegalArgumentException("Campaign must be associated with a product");
+        else {
+            Product product = ofy().load().type(Product.class).id(campaign.getProduct()).now();
+            if (product==null)
+                throw new IllegalArgumentException("No such product, register it first.");
+        }
+
+        if (campaign.getStatusChangeLog() == null || campaign.getStatusChangeLog().getChangeLogs().size()==0)
+            throw new IllegalArgumentException("Campaign status changelog not initialized");
+
         ofy().save().entity(campaign).now();
         return campaign;
     }
@@ -123,6 +144,17 @@ public class AccountServiceDaoGAEDS implements AccountServiceDao {
     @Override
     public Campaign retrieveCampaign(String campaignId) {
         return ofy().load().type(Campaign.class).id(campaignId).now();
+    }
+
+    @Override
+    public Marketplace saveMarketplace(Marketplace marketplace) {
+        ofy().save().entity(marketplace).now();
+        return marketplace;
+    }
+
+    @Override
+    public Marketplace retrieveMarketplace(Long marketplaceId) {
+        return ofy().load().type(Marketplace.class).id(marketplaceId).now();
     }
 
     /**

@@ -44,7 +44,7 @@ public class AccountService {
      * @param parent
      * @param businessUnit
      */
-    public void addBusinessUnit(Account parent, BusinessUnit businessUnit){
+    public BusinessUnit addBusinessUnit(Account parent, BusinessUnit businessUnit){
         if (businessUnit.getId()==null)
            accountServiceDao.saveBusinessUnit(businessUnit);
         if (parent.getId() == null)
@@ -56,6 +56,8 @@ public class AccountService {
         accountServiceDao.saveBusinessUnit(businessUnit);
         accountServiceDao.saveAccount(parent);
 
+        return businessUnit;
+
     }
 
     /**
@@ -63,7 +65,7 @@ public class AccountService {
      * @param parent
      * @param product
      */
-    public void addProduct(Account parent, Product product){
+    public Product addProduct(Account parent, Product product){
         if (product.getCode() == null)
            accountServiceDao.saveProduct(product);
         product.setParentAccount(parent.getId());
@@ -71,6 +73,7 @@ public class AccountService {
 
         accountServiceDao.saveAccount(parent);
         accountServiceDao.saveProduct(product);
+        return product;
     }
 
     /**
@@ -132,5 +135,19 @@ public class AccountService {
 
     public SortedSet<Campaign> listAccountCampaignsInHierarchy(Long accountId){
         return accountServiceDao.listAccountCampaignsInHierarchy(accountId);
+    }
+
+    public Campaign retrieveCampaign(String campaignCode){
+        return accountServiceDao.retrieveCampaign(campaignCode);
+    }
+    public Campaign saveCampaign(Campaign campaign){
+        return accountServiceDao.saveCampaign(campaign);
+    }
+
+    public Product retrieveProduct(String productCode){
+        return accountServiceDao.retrieveProduct(productCode);
+    }
+    public Product saveProduct(Product product){
+        return accountServiceDao.saveProduct(product);
     }
 }

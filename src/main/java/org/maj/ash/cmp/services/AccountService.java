@@ -1,10 +1,7 @@
 package org.maj.ash.cmp.services;
 
 import org.maj.ash.cmp.dao.AccountServiceDao;
-import org.maj.ash.cmp.model.Account;
-import org.maj.ash.cmp.model.BusinessUnit;
-import org.maj.ash.cmp.model.MSAAccount;
-import org.maj.ash.cmp.model.Product;
+import org.maj.ash.cmp.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -114,7 +111,7 @@ public class AccountService {
     }
 
     public SortedSet<Product> listAccountProducts(Account account){
-        return accountServiceDao.getProducts(account);
+        return accountServiceDao.listAccountProducts(account);
     }
 
     public SortedSet<Product> listAccountProducts(Long accountId){
@@ -126,6 +123,14 @@ public class AccountService {
     }
 
     public SortedSet<Account> listAccountSubAccounts(Long accountId){
-        return accountServiceDao.getSubAccounts(accountId);
+        return accountServiceDao.listAccounts(accountId);
+    }
+
+    public SortedSet<Campaign> listAccountCampaigns(Long accountId){
+        return accountServiceDao.listAccountCampaigns(accountId);
+    }
+
+    public SortedSet<Campaign> listAccountCampaignsInHierarchy(Long accountId){
+        return accountServiceDao.listAccountCampaignsInHierarchy(accountId);
     }
 }

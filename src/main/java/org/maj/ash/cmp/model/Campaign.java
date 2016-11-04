@@ -8,7 +8,7 @@ import org.maj.ash.cmp.model.enums.CampaignStatus;
 import java.util.Date;
 
 @Entity
-public class Campaign {
+public class Campaign implements Comparable<Campaign>{
 
 	@Id private String code;
 	private String description;
@@ -125,5 +125,10 @@ public class Campaign {
                 ", status=" + this.getStatus(new Date()).toString() +
                 ", statusChangeLog=" + this.statusChangeLog.toString() +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Campaign o) {
+        return this.getCode().compareTo(o.getCode());
     }
 }

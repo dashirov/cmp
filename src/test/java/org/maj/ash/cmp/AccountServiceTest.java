@@ -14,7 +14,6 @@ import org.maj.ash.cmp.model.BusinessUnit;
 import org.maj.ash.cmp.model.MSAAccount;
 import org.maj.ash.cmp.model.Product;
 import org.maj.ash.cmp.model.enums.ProductStatus;
-import org.maj.ash.cmp.services.AccountService;
 
 import java.util.Date;
 
@@ -135,7 +134,7 @@ public class AccountServiceTest {
         accountServiceDao.saveProduct(product);
 
         Assert.assertTrue("MSA lists all BU products products",
-                accountServiceDao.getAllProducts(account).containsAll(accountServiceDao.getAllProducts(someBusinessUnit)));
+                accountServiceDao.listAccountProductsInHierarchy(account).containsAll(accountServiceDao.listAccountProductsInHierarchy(someBusinessUnit)));
         Assert.assertTrue("MSA object references no products directly",account.getProducts().isEmpty());
 
     }

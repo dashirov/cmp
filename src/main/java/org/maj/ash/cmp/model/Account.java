@@ -14,7 +14,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 @Entity
-public class Account {
+public class Account implements Comparable<Account>{
     @Id
     private Long id;
     private AccountType type;
@@ -82,4 +82,8 @@ public class Account {
     }
 
 
+    @Override
+    public int compareTo(Account o) {
+        return this.getName().compareTo(o.getName());
+    }
 }

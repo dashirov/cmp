@@ -11,7 +11,7 @@ import com.googlecode.objectify.annotation.Id;
 
 
 @Entity
-public class Marketplace {
+public class Marketplace implements Comparable<Marketplace> {
     @Id private Long id;
     private String name;
 
@@ -37,5 +37,10 @@ public class Marketplace {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Marketplace o) {
+        return this.getName().compareTo(o.getName());
     }
 }

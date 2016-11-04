@@ -1,10 +1,7 @@
 package org.maj.ash.cmp.dao;
 
 import com.googlecode.objectify.Key;
-import org.maj.ash.cmp.model.Account;
-import org.maj.ash.cmp.model.BusinessUnit;
-import org.maj.ash.cmp.model.MSAAccount;
-import org.maj.ash.cmp.model.Product;
+import org.maj.ash.cmp.model.*;
 import org.springframework.stereotype.Component;
 
 import java.util.SortedSet;
@@ -66,14 +63,25 @@ public class AccountServiceDaoGAEDS implements AccountServiceDao {
         return ofy().load().type(Product.class).id(productCode).now();
     }
 
+    @Override
+    public Campaign saveCampaign(Campaign campaign) {
+        ofy().save().entity(campaign).now();
+        return campaign;
+    }
+
+    @Override
+    public Campaign retrieveCampaign(String campaignId) {
+        return ofy().load().type(Campaign.class).id(campaignId).now();
+    }
+
     /**
      * Given an account id, pull its object from datastore and then pull its products as a sorted list
      * @param accountId
      * @return
      */
     @Override
-    public SortedSet<Product> getProducts(Long accountId){
-        return getProducts(retrieveAccount(accountId));
+    public SortedSet<Product> listAccountProducts(Long accountId){
+        return listAccountProducts(retrieveAccount(accountId));
     }
 
     /**
@@ -81,7 +89,7 @@ public class AccountServiceDaoGAEDS implements AccountServiceDao {
      * @param account
      * @return
      */
-    public SortedSet<Product> getProducts(Account account){
+    public SortedSet<Product> listAccountProducts(Account account){
         return new TreeSet<>( ofy().load().type(Product.class).ids(account.getProducts().toArray(new String[account.getProducts().size()])).values());
     }
     /**
@@ -90,17 +98,17 @@ public class AccountServiceDaoGAEDS implements AccountServiceDao {
      * @return
      */
     @Override
-    public SortedSet<Product> getAllProducts(Account account) {
-        SortedSet<Product> out = getProducts(account);
-        for (Account a: getAllSubAccounts(account)
+    public SortedSet<Product> listAccountProductsInHierarchy(Account account) {
+        SortedSet<Product> out = listAccountProducts(account);
+        for (Account a: listAccountsInHierarchy(account)
              ) {
-            out.addAll(getProducts(a));
+            out.addAll(listAccountProducts(a));
         }
         return out;
     }
 
-    public SortedSet<Product> getAllProducts(Long accountId){
-        return getAllProducts(retrieveAccount(accountId));
+    public SortedSet<Product> listAccountProductsInHierarchy(Long accountId){
+        return listAccountProductsInHierarchy(retrieveAccount(accountId));
     }
     /**
      * Given an account Id, pull its direct sub-accounts as a sorted set
@@ -108,8 +116,8 @@ public class AccountServiceDaoGAEDS implements AccountServiceDao {
      * @return
      */
     @Override
-    public SortedSet<Account> getSubAccounts(Long accountId) {
-        return getSubAccounts(retrieveAccount(accountId));
+    public SortedSet<Account> listAccounts(Long accountId) {
+        return listAccounts(retrieveAccount(accountId));
     }
 
     /**
@@ -118,7 +126,7 @@ public class AccountServiceDaoGAEDS implements AccountServiceDao {
      * @return
      */
     @Override
-    public SortedSet<Account> getSubAccounts(Account account) {
+    public SortedSet<Account> listAccounts(Account account) {
         return new TreeSet<>( ofy().load().type(Account.class).ids(account.getChildAccounts().toArray(new Long[account.getChildAccounts().size()])).values());
     }
 
@@ -127,8 +135,49 @@ public class AccountServiceDaoGAEDS implements AccountServiceDao {
      * @param accountId
      * @return
      */
-    public SortedSet<Account> getAllSubAccounts(long accountId) {
-        return getAllSubAccounts(retrieveAccount(accountId));
+    public SortedSet<Account> listAccountsInHierarchy(Long accountId) {
+        return listAccountsInHierarchy(retrieveAccount(accountId));
+    }
+
+    @Override
+    public SortedSet<Campaign> listAccountCampaigns(Account account) {
+        // account -> products ->> campaigns
+        SortedSet<Campaign> out = new TreeSet<>();
+        for (Product product: listAccountProducts(account)
+             ) {
+            out.addAll(listProductCampaigns(product));
+        }
+        return out;
+    }
+
+    @Override
+    public SortedSet<Campaign> listAccountCampaigns(Long accountId) {
+        return listAccountCampaigns(retrieveAccount(accountId));
+    }
+
+    @Override
+    public SortedSet<Campaign> listAccountCampaignsInHierarchy(Account account) {
+        SortedSet<Campaign> out = new TreeSet<>(listAccountCampaigns(account));
+        for (Account a: listAccountsInHierarchy(account)
+             ) {
+            out.addAll(listAccountCampaigns(a));
+        }
+        return out;
+    }
+
+    @Override
+    public SortedSet<Campaign> listAccountCampaignsInHierarchy(Long accountId) {
+        return listAccountCampaignsInHierarchy(retrieveAccount(accountId));
+    }
+
+    @Override
+    public SortedSet<Campaign> listProductCampaigns(Product product) {
+        return new TreeSet<>( ofy().load().type(Campaign.class).ids(product.getCampaigns().toArray(new String[product.getCampaigns().size()])).values());
+    }
+
+    @Override
+    public SortedSet<Campaign> listProductCampaigns(String productCode) {
+        return listProductCampaigns(ofy().load().type(Product.class).id(productCode).now());
     }
 
     /**
@@ -136,12 +185,12 @@ public class AccountServiceDaoGAEDS implements AccountServiceDao {
      * @param account
      * @return
      */
-    public SortedSet<Account> getAllSubAccounts(Account account){
+    public SortedSet<Account> listAccountsInHierarchy(Account account){
         SortedSet<Account> out = new TreeSet<>();
         for (Account a: ofy().load().type(Account.class).ids(account.getChildAccounts().toArray(new Long[account.getChildAccounts().size()])).values()
              ) {
             out.add(a);
-            out.addAll(getAllSubAccounts(a));
+            out.addAll(listAccountsInHierarchy(a));
         }
         return out;
     }

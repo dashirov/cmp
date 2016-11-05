@@ -1,5 +1,6 @@
 package org.maj.ash.cmp.config;
 
+
 import com.googlecode.objectify.ObjectifyFilter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -15,6 +16,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 /**
  * @author shamik.majumdar
  */
+
 @Configuration
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class})
 @EnableConfigurationProperties
@@ -24,7 +26,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class AppConfig {
     @Bean
     public FilterRegistrationBean someFilterRegistration() {
-
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setFilter(new ObjectifyFilter());
         registration.addUrlPatterns("/*");

@@ -150,4 +150,20 @@ public class AccountService {
     public Product saveProduct(Product product){
         return accountServiceDao.saveProduct(product);
     }
+
+    public Marketplace saveMarketplace(Marketplace marketplace){
+        return accountServiceDao.saveMarketplace(marketplace);
+    }
+
+    public SortedSet<Marketplace> listMarketplaces(){
+        return accountServiceDao.listMarketplaces();
+    }
+
+    public Marketplace retrieveMarketplace(Long marketplaceId){
+        return accountServiceDao.retrieveMarketplace(marketplaceId);
+    }
+
+    public Marketplace markMarketplaceForTermination(Long marketplaceId){
+        return accountServiceDao.markMarketplaceForTermination(marketplaceId);
+    }
 }

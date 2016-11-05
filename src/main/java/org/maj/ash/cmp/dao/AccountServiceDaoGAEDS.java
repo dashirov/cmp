@@ -2,8 +2,10 @@ package org.maj.ash.cmp.dao;
 
 import com.googlecode.objectify.Key;
 import org.maj.ash.cmp.model.*;
+import org.maj.ash.cmp.model.enums.MarketplaceStatus;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -14,8 +16,6 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
  */
 @Component
 public class AccountServiceDaoGAEDS implements AccountServiceDao {
-
-
     /**
      * Given an acount POJO, simply save it. Account is either MSA or BU account.
      * @param account
@@ -276,6 +276,34 @@ public class AccountServiceDaoGAEDS implements AccountServiceDao {
             out.addAll(listAccountsInHierarchy(a));
         }
         return out;
+    }
+
+    public SortedSet<Marketplace> listMarketplaces(){
+        SortedSet<Marketplace> out = new TreeSet<>();
+        Iterable<Marketplace> vendors=ofy().load().type(Marketplace.class);
+        for (Marketplace vendor: vendors
+             ) {
+            out.add(vendor);
+        }
+        return out;
+
+    }
+
+    public Marketplace markMarketplaceForTermination(Long marketplaceId){
+        Marketplace marketplace = ofy().load().type(Marketplace.class).id(marketplaceId).now();
+        return markMarketplaceForTermination(marketplace);
+    }
+
+    public Marketplace markMarketplaceForTermination(Marketplace marketplace){
+        marketplace.setStatus(MarketplaceStatus.TERMINATED);
+        saveMarketplace(marketplace);
+        return marketplace;
+    }
+
+    public Marketplace markMarketplaceForTermination(Date effectiveDate, Marketplace marketplace){
+        marketplace.setStatus(effectiveDate,MarketplaceStatus.TERMINATED);
+        saveMarketplace(marketplace);
+        return marketplace;
     }
 
 

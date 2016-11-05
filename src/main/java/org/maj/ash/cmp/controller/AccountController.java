@@ -76,4 +76,29 @@ public class AccountController {
         return  accountService.saveCampaign(campaign);
     }
 
+    @RequestMapping(value = "/marketplace/addMarketplace", method = RequestMethod.POST)
+    @ResponseBody
+    public Marketplace addMarketplace(@RequestBody Marketplace marketplace){
+        return accountService.saveMarketplace(marketplace);
+    }
+
+    @RequestMapping(value = "/marketplace", method = RequestMethod.GET)
+    @ResponseBody
+    public SortedSet<Marketplace> listMarketplaces(){
+        return accountService.listMarketplaces();
+    }
+
+    @RequestMapping(value = "/marketplace/{marketplaceId}", method = RequestMethod.GET)
+    @ResponseBody
+    public Marketplace getMarketplace(@PathVariable Long marketplaceId){
+        return accountService.retrieveMarketplace(marketplaceId);
+    }
+
+    @RequestMapping(value = "/marketplace/{marketplaceId}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public Marketplace markMarketplaceForDeletion(@PathVariable Long markeplaceId){
+        return accountService.markMarketplaceForTermination(markeplaceId);
+
+    }
+
 }

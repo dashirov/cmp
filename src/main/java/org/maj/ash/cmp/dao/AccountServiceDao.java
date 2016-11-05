@@ -2,6 +2,7 @@ package org.maj.ash.cmp.dao;
 
 import org.maj.ash.cmp.model.*;
 
+import java.util.Date;
 import java.util.SortedSet;
 
 
@@ -31,7 +32,10 @@ public interface AccountServiceDao {
 
     Marketplace saveMarketplace(Marketplace marketplace);
     Marketplace retrieveMarketplace(Long marketplaceId);
-
+    SortedSet<Marketplace> listMarketplaces();
+    Marketplace markMarketplaceForTermination(Long marketplaceId);
+    Marketplace markMarketplaceForTermination(Marketplace marketplace);
+    Marketplace markMarketplaceForTermination(Date effectiveDate, Marketplace marketplace);
 
 
     /**

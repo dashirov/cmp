@@ -14,7 +14,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 @Entity
-public class Account {
+public class Account implements Comparable<Account>{
     @Id
     private Long id;
     private AccountType type;
@@ -24,6 +24,20 @@ public class Account {
     @Container
     private SortedSet<Long> childAccounts = new TreeSet<>();
 
+    @Container
+    private SortedSet<String> products = new TreeSet<>();
+
+    public void addProduct(String productCode){
+        products.add(productCode);
+    }
+
+    public SortedSet<String> getProducts(){
+        return products;
+    }
+
+    public void removeProduct(String productCode){
+        products.remove(productCode);
+    }
     public Long getId() {
         return id;
     }
@@ -63,5 +77,13 @@ public class Account {
     public void addChildAccount(Long businessUnitId) {
         childAccounts.add(businessUnitId);
     }
+    public void removeChildAccount(Long businessUnitId){
+        childAccounts.remove(businessUnitId);
+    }
 
+
+    @Override
+    public int compareTo(Account o) {
+        return this.getName().compareTo(o.getName());
+    }
 }

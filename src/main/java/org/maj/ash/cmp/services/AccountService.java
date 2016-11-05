@@ -154,6 +154,18 @@ public class AccountService {
     public Campaign retrieveCampaign(String campaignCode){
         return accountServiceDao.retrieveCampaign(campaignCode);
     }
+
+    public Campaign addCampaign(Product product, Campaign campaign ){
+        if (!campaign.getCode().startsWith(product.getCode()))
+            throw new IllegalArgumentException("By convention, campaign code start with product code");
+
+        product.addCampaign(campaign.getCode());
+        campaign.setProduct(product.getCode());
+        accountServiceDao.saveCampaign(campaign);
+        accountServiceDao.saveProduct(product);
+        return campaign;
+    }
+
     public Campaign saveCampaign(Campaign campaign){
         return accountServiceDao.saveCampaign(campaign);
     }

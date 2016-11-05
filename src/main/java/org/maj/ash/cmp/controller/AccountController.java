@@ -69,11 +69,7 @@ public class AccountController {
         if (!(parent.getProducts().contains(productCode) && product.getParentAccount()==accountId))
             throw new IllegalArgumentException("Account " + accountId + "and Product "+productCode + "are not related");
 
-        campaign.setProduct(productCode);
-        product.addCampaign(campaign.getCode());
-
-        accountService.saveProduct(product);
-        return  accountService.saveCampaign(campaign);
+        return accountService.addCampaign(product,campaign); // TODO: service will link them together, but where's a better place?
     }
 
     @RequestMapping(value = "/marketplace/addMarketplace", method = RequestMethod.POST)

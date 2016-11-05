@@ -11,9 +11,12 @@ import org.junit.*;
 import org.maj.ash.cmp.dao.AccountServiceDao;
 import org.maj.ash.cmp.dao.AccountServiceDaoGAEDS;
 import org.maj.ash.cmp.model.*;
+import org.maj.ash.cmp.model.enums.CampaignStatus;
+import org.maj.ash.cmp.model.enums.CampaignType;
 import org.maj.ash.cmp.model.enums.MarketplaceStatus;
 import org.maj.ash.cmp.model.enums.ProductStatus;
 import org.maj.ash.cmp.services.AccountService;
+import org.yaml.snakeyaml.error.Mark;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -38,6 +41,7 @@ public class AccountServiceTest {
         ObjectifyService.register(BusinessUnit.class);
         ObjectifyService.register(Product.class);
         ObjectifyService.register(Marketplace.class);
+        ObjectifyService.register(Campaign.class);
 
     }
 
@@ -152,7 +156,7 @@ public class AccountServiceTest {
      * 3. Load 2-3 products
      * 4. create a few business units
      * 5. Move products around
-     *
+     * 6. Create a few marketing campaigns
      *
      */
 
@@ -171,6 +175,7 @@ public class AccountServiceTest {
         String[] semMarketplaces = {"Facebook", "Instagram", "Google", "Yahoo Gemini", "Yahoo Japan", "Twitter", "LinkedIn"};
         String[] affMArketplaces = {"Casale Media", "Media Crossing", "Yieldmo"};
 
+        Map<String,Marketplace> marketplaces = new HashMap<>();
 
         for (String name : semMarketplaces
              ) {
@@ -185,6 +190,7 @@ public class AccountServiceTest {
                 m = service.markMarketplaceForTermination(m.getId());
                 Assert.assertEquals("Expected status to be flipped to TERMINATED", m.getStatus(), MarketplaceStatus.TERMINATED);
             }
+            marketplaces.put(m.getName(),m);
         }
         Map<String,String> products =     ImmutableMap.of("CCF", "Canned Cat Food",
                                                           "CDF", "Canned Dog Food",
@@ -249,6 +255,39 @@ public class AccountServiceTest {
         Assert.assertEquals(2,service.listAccountProducts(bu1.getId()).size());
         // Tip by BusinessUnit object
         Assert.assertEquals(1,service.listAccountProducts(bu2).size());
+
+
+        Marketplace mGoogle = marketplaces.get("Google");
+        Product pCCF = service.retrieveProduct("CCF");
+        Campaign cCCFdrm001 = new Campaign();
+        cCCFdrm001.setProduct(pCCF.getCode());
+        cCCFdrm001.setMarketplace(mGoogle.getId());
+        cCCFdrm001.setStatus(new Date(), CampaignStatus.NEW);
+        cCCFdrm001.setType(CampaignType.CPC);
+        cCCFdrm001.setDescription("Google | Canned Cat Food | US | Search Keywords");
+        cCCFdrm001.setCode(cCCFdrm001.getProduct() + "^drm001");
+        service.addCampaign(pCCF,cCCFdrm001); // addCampaign will link product to campaign, saveCampaign won't
+        Assert.assertEquals(pCCF.getCode(), cCCFdrm001.getProduct()); // this may fail in the cloud...
+        Assert.assertTrue(pCCF.getCampaigns().contains(cCCFdrm001.getCode()));
+        cCCFdrm001.setStatus(new Date(),CampaignStatus.ACTIVE);
+        service.saveCampaign(cCCFdrm001);
+
+
+
+        Product dogfood = service.retrieveProduct("CDF");
+        Campaign anotherCampaign = new Campaign();
+        anotherCampaign.setProduct(dogfood.getCode());
+        anotherCampaign.setMarketplace(marketplaces.get("Facebook").getId());
+        anotherCampaign.setType(CampaignType.CPC);
+        anotherCampaign.setStatus(new Date(),CampaignStatus.NEW);
+        anotherCampaign.setDescription("Dogfood on Russian market via Facebook search");
+        // Not setting product service should take care of that. Can we not set the code in the future?
+        anotherCampaign.setCode("CDF^drm001");
+        service.addCampaign(dogfood,anotherCampaign);
+
+        Assert.assertEquals(anotherCampaign.getProduct(),dogfood.getCode());
+        Assert.assertTrue(dogfood.getCampaigns().contains(anotherCampaign.getCode()));
+
     }
 
 

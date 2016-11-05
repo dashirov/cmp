@@ -4,6 +4,7 @@ import com.googlecode.objectify.annotation.Container;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import org.maj.ash.cmp.model.enums.CampaignStatus;
+import org.maj.ash.cmp.model.enums.CampaignType;
 
 import java.util.Date;
 
@@ -14,6 +15,8 @@ public class Campaign implements Comparable<Campaign>{
 	private String description;
     private Long marketplace;  // where do we buy the traffc from
     private String product; // what product are we advertising
+    private CampaignType type;
+
 
     @Container
     private ChangeLog<Double> priceChangeLog = new ChangeLog<>();
@@ -25,7 +28,15 @@ public class Campaign implements Comparable<Campaign>{
 		super();
 	}
 
-	public Campaign(String code, String description) {
+    public CampaignType getType() {
+        return type;
+    }
+
+    public void setType(CampaignType type) {
+        this.type = type;
+    }
+
+    public Campaign(String code, String description) {
 		super();
 		this.code = code;
 		this.description = description;

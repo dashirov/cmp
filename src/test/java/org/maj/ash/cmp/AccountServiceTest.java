@@ -157,6 +157,7 @@ public class AccountServiceTest {
      * 4. create a few business units
      * 5. Move products around
      * 6. Create a few marketing campaigns
+     * 7. Move products around again. Make sure campaigns move as well, products are discovered in the hierarchy... etc.
      *
      */
 
@@ -164,7 +165,7 @@ public class AccountServiceTest {
     public void initBasics(){
         AccountServiceDao  accountServiceDao = new AccountServiceDaoGAEDS();
         AccountService service = new AccountService();
-        service.setAccountServiceDao(accountServiceDao);
+        service.setAccountServiceDao(accountServiceDao); // should have been autowired.
 
         MSAAccount business = new MSAAccount();
         business.setName("My Business");
@@ -287,6 +288,33 @@ public class AccountServiceTest {
 
         Assert.assertEquals(anotherCampaign.getProduct(),dogfood.getCode());
         Assert.assertTrue(dogfood.getCampaigns().contains(anotherCampaign.getCode()));
+
+
+        BusinessUnit eCommerce = new BusinessUnit();
+        eCommerce.setName("eCommerece");
+        eCommerce.setDescription("Online sales");
+        service.addBusinessUnit(bu1,eCommerce);
+
+        Assert.assertEquals(eCommerce.getParentAccount(),bu1.getId());
+        Assert.assertNotNull(eCommerce.getId());
+        Assert.assertTrue(bu1.getChildAccounts().contains(eCommerce.getId()));
+
+
+        service.moveProduct(eCommerce,pCCF);
+        service.moveProduct(eCommerce,dogfood);
+
+        Assert.assertEquals(3,service.listAccountProductsInHierarchy(business).size());
+        Assert.assertEquals(3,service.listAccountProductsInHierarchy(business).size());
+        Assert.assertEquals(2,service.listAccountProductsInHierarchy(bu1).size());
+        Assert.assertEquals(2,service.listAccountProducts(eCommerce).size());
+
+        Assert.assertEquals(2,service.listAccountCampaigns(eCommerce).size());
+        Assert.assertEquals(2,service.listAccountCampaignsInHierarchy(1L).size());
+        Assert.assertEquals(2,service.listAccountCampaignsInHierarchy(business).size());
+
+
+
+
 
     }
 

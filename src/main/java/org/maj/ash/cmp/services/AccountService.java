@@ -2,9 +2,11 @@ package org.maj.ash.cmp.services;
 
 import org.maj.ash.cmp.dao.AccountServiceDao;
 import org.maj.ash.cmp.model.*;
+import org.maj.ash.cmp.model.enums.ProductStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.SortedSet;
 
 /**
@@ -74,8 +76,12 @@ public class AccountService {
     public Product addProduct(Account parent, Product product){
         if (product.getCode() == null)
            accountServiceDao.saveProduct(product);
+
         product.setParentAccount(parent.getId());
         parent.addProduct(product.getCode());
+
+        if (product.getStatusChangeLog().getChangeLogs().size()==0)
+            product.setStatus(new Date(), ProductStatus.NEW);
 
         accountServiceDao.saveAccount(parent);
         accountServiceDao.saveProduct(product);
@@ -143,12 +149,20 @@ public class AccountService {
         return accountServiceDao.listAccounts(accountId);
     }
 
+    public SortedSet<Campaign> listAccountCampaigns(Account account){
+        return accountServiceDao.listAccountCampaigns(account);
+    }
+
+    public SortedSet<Campaign> listAccountCampaignsInHierarchy(Account account){
+        return accountServiceDao.listAccountCampaignsInHierarchy(account);
+    }
+
     public SortedSet<Campaign> listAccountCampaigns(Long accountId){
-        return accountServiceDao.listAccountCampaigns(accountId);
+        return listAccountCampaigns(accountServiceDao.retrieveAccount(accountId));
     }
 
     public SortedSet<Campaign> listAccountCampaignsInHierarchy(Long accountId){
-        return accountServiceDao.listAccountCampaignsInHierarchy(accountId);
+        return listAccountCampaignsInHierarchy(accountServiceDao.retrieveAccount(accountId));
     }
 
     public Campaign retrieveCampaign(String campaignCode){

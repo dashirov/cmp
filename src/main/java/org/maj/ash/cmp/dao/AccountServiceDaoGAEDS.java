@@ -286,7 +286,6 @@ public class AccountServiceDaoGAEDS implements AccountServiceDao {
             out.add(vendor);
         }
         return out;
-
     }
 
     public Marketplace markMarketplaceForTermination(Long marketplaceId){

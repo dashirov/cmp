@@ -15,6 +15,12 @@ public class AccountService {
     @Autowired
     private AccountServiceDao accountServiceDao;
 
+    // TODO: Shamik, I need this for testing until I figure out how to debug autowired shit
+    public void setAccountServiceDao(AccountServiceDao accountServiceDao) {
+        this.accountServiceDao = accountServiceDao;
+    }
+
+
     /**
      * System deployed to a client needs to be initialized with client information first.
      * @param business
@@ -121,6 +127,14 @@ public class AccountService {
         return listAccountProducts(accountServiceDao.retrieveAccount(accountId));
     }
 
+    public SortedSet<Product> listAccountProductsInHierarchy(Account account){
+        return accountServiceDao.listAccountProductsInHierarchy(account);
+    }
+
+    public SortedSet<Product> listAccountProductsInHierarchy(Long accountId){
+        return listAccountProductsInHierarchy(accountServiceDao.retrieveAccount(accountId));
+    }
+
     public Account retrieveAccount(Long accountId){
         return accountServiceDao.retrieveAccount(accountId);
     }
@@ -149,6 +163,12 @@ public class AccountService {
     }
     public Product saveProduct(Product product){
         return accountServiceDao.saveProduct(product);
+    }
+
+
+    public Marketplace addMarketplace(Marketplace marketplace){
+        // TODO: check for duplicate names?
+        return accountServiceDao.saveMarketplace(marketplace);
     }
 
     public Marketplace saveMarketplace(Marketplace marketplace){

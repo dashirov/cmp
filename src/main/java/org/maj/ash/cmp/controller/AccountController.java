@@ -38,7 +38,7 @@ public class AccountController {
     @RequestMapping(value = "/account/{accountId}/accounts", method = RequestMethod.GET)
     @ResponseBody
     public SortedSet<Account> listAccountSubAccounts(@PathVariable Long accountId){
-        return accountService.listAccountSubAccounts(accountId);
+        return accountService.listAccounts(accountId);
     }
 
     @RequestMapping(value = "/account/{accountId}/addBusinessUnit", method = RequestMethod.POST)

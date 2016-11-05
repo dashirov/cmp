@@ -145,8 +145,20 @@ public class AccountService {
         return accountServiceDao.retrieveAccount(accountId);
     }
 
-    public SortedSet<Account> listAccountSubAccounts(Long accountId){
+    public SortedSet<Account> listAccounts(Long accountId){
         return accountServiceDao.listAccounts(accountId);
+    }
+
+    public SortedSet<Account> listAccounts(Account account){
+        return accountServiceDao.listAccounts(account);
+    }
+
+    public SortedSet<Account> listAccountsInHierarchy(Long accountId){
+        return accountServiceDao.listAccountsInHierarchy(accountId);
+    }
+
+    public SortedSet<Account> listAccountsInHierarchy(Account account){
+        return accountServiceDao.listAccountsInHierarchy(account);
     }
 
     public SortedSet<Campaign> listAccountCampaigns(Account account){

@@ -312,6 +312,13 @@ public class AccountServiceTest {
         Assert.assertEquals(2,service.listAccountCampaignsInHierarchy(1L).size());
         Assert.assertEquals(2,service.listAccountCampaignsInHierarchy(business).size());
 
+        Assert.assertEquals(3,service.listAccountsInHierarchy(1L).size());
+        Assert.assertEquals(3,service.listAccountsInHierarchy(business).size());
+        Assert.assertEquals(2,service.listAccounts(business).size());
+        Assert.assertEquals(2,service.listAccounts(1L).size());
+
+
+
 
 
 

@@ -158,6 +158,8 @@ public class AccountServiceTest {
      * 5. Move products around
      * 6. Create a few marketing campaigns
      * 7. Move products around again. Make sure campaigns move as well, products are discovered in the hierarchy... etc.
+     * 8. When a campaign created against a product that is not ACTIVE what should happen?
+     *    Should product be activated or Should campaign be prevented from being created?
      *
      */
 
@@ -257,7 +259,6 @@ public class AccountServiceTest {
         // Tip by BusinessUnit object
         Assert.assertEquals(1,service.listAccountProducts(bu2).size());
 
-
         Marketplace mGoogle = marketplaces.get("Google");
         Product pCCF = service.retrieveProduct("CCF");
         Campaign cCCFdrm001 = new Campaign();
@@ -272,8 +273,6 @@ public class AccountServiceTest {
         Assert.assertTrue(pCCF.getCampaigns().contains(cCCFdrm001.getCode()));
         cCCFdrm001.setStatus(new Date(),CampaignStatus.ACTIVE);
         service.saveCampaign(cCCFdrm001);
-
-
 
         Product dogfood = service.retrieveProduct("CDF");
         Campaign anotherCampaign = new Campaign();
@@ -317,16 +316,6 @@ public class AccountServiceTest {
         Assert.assertEquals(2,service.listAccounts(business).size());
         Assert.assertEquals(2,service.listAccounts(1L).size());
 
-
-
-
-
-
-
     }
-
-
-
-
 
 }

@@ -53,7 +53,6 @@ public class App
 
     }
 
-<<<<<<< HEAD
     public static void main(String[] args) throws Exception {
         String serverString = args[0];
         LocalServiceTestHelper helper = null;
@@ -91,9 +90,4 @@ public class App
         }
 
     }*/
-=======
-    public static void main(String[] args)  {
-            SpringApplication.run(App.class, args);
-    }
->>>>>>> 7ed04dafd0eaf343a42d72bca95c5283090fa127
 }

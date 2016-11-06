@@ -1,8 +1,11 @@
 package org.maj.ash.cmp;
 
+import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
+import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.appengine.tools.remoteapi.RemoteApiInstaller;
 import com.google.appengine.tools.remoteapi.RemoteApiOptions;
 import com.googlecode.objectify.ObjectifyService;
+import com.googlecode.objectify.util.Closeable;
 import org.maj.ash.cmp.config.AppConfig;
 import org.maj.ash.cmp.model.*;
 import org.maj.ash.cmp.model.stats.AcquisitionGuidance;
@@ -52,6 +55,23 @@ public class App
 
     public static void main(String[] args) throws Exception {
         String serverString = args[0];
+        LocalServiceTestHelper helper = null;
+        Closeable session = null;
+
+        if ("localhost".equals(serverString)) {
+            helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
+            session = ObjectifyService.begin();
+            helper.setUp();
+        }
+        try {
+            SpringApplication.run(App.class, args);
+        }finally {
+            if (session != null) session.close();
+            if (helper != null) helper.tearDown();
+        }
+    }
+    /*public static void main(String[] args) throws Exception {
+        String serverString = args[0];
         RemoteApiOptions options;
         if (serverString.equals("localhost")) {
             options = new RemoteApiOptions().server(serverString,
@@ -69,5 +89,5 @@ public class App
             installer.uninstall();
         }
 
-    }
+    }*/
 }

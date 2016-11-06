@@ -1,5 +1,6 @@
 package org.maj.ash.cmp.model.stats;
 
+import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 
 import java.text.SimpleDateFormat;
@@ -8,6 +9,7 @@ import java.util.Date;
 /**
  * Created by dashirov on 10/18/16.
  */
+@Entity
 public class AcquisitionMeasurements {
     @Id private String id;
     private String campaign;

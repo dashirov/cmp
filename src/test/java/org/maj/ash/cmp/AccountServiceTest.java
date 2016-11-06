@@ -30,7 +30,7 @@ import java.util.function.BiConsumer;
 public class AccountServiceTest {
     private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
     protected Closeable session;
-
+    public MSAAccount business;
 
     @BeforeClass
     public static void setUpBeforeClass() {
@@ -166,10 +166,10 @@ public class AccountServiceTest {
     @Test
     public void initBasics(){
         AccountServiceDao  accountServiceDao = new AccountServiceDaoGAEDS();
-        AccountService service = new AccountService();
+        final AccountService service = new AccountService();
         service.setAccountServiceDao(accountServiceDao); // should have been autowired.
 
-        MSAAccount business = new MSAAccount();
+        business = new MSAAccount();
         business.setName("My Business");
         business.setDescription("Description");
         service.initializeDeployment(business);

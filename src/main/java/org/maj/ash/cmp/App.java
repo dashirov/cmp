@@ -50,24 +50,7 @@ public class App
 
     }
 
-    public static void main(String[] args) throws Exception {
-        String serverString = args[0];
-        RemoteApiOptions options;
-        if (serverString.equals("localhost")) {
-            options = new RemoteApiOptions().server(serverString,
-                    8080).useDevelopmentServerCredential().remoteApiPath("/");
-        } else {
-            options = new RemoteApiOptions().server(serverString,
-                    443).useApplicationDefaultCredential();
-        }
-        RemoteApiInstaller installer = new RemoteApiInstaller();
-
-        installer.install(options);
-        try {
+    public static void main(String[] args)  {
             SpringApplication.run(App.class, args);
-        } finally {
-            installer.uninstall();
-        }
-
     }
 }

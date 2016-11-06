@@ -2,6 +2,7 @@ package org.maj.ash.cmp.model.stats;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Entity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

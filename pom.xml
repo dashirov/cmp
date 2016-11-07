@@ -65,6 +65,15 @@
             <artifactId>objectify</artifactId>
             <version>${objectify.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.193</version>
+        </dependency>
         <!-- [END Objectify_Dependencies] -->
         <!-- TEST -->
         <dependency>
@@ -84,6 +93,12 @@
             <artifactId>junit</artifactId>
             <version>4.12</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>2.2.9</version>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
     <build>

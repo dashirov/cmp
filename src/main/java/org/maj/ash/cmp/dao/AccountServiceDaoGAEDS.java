@@ -3,6 +3,7 @@ package org.maj.ash.cmp.dao;
 import com.googlecode.objectify.Key;
 import org.maj.ash.cmp.model.*;
 import org.maj.ash.cmp.model.enums.MarketplaceStatus;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -15,6 +16,7 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
  * Created by shamikm78 on 10/21/16.
  */
 @Component
+@Profile("gae")
 public class AccountServiceDaoGAEDS implements AccountServiceDao {
     /**
      * Given an acount POJO, simply save it. Account is either MSA or BU account.
